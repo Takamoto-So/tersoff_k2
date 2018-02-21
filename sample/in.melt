@@ -1,0 +1,54 @@
+shell mkdir cfg
+
+units	metal
+boundary p p p
+atom_style charge
+
+lattice diamond 5.4
+region sim_box block 0 4 0 4 0 7 units lattice
+create_box 1 sim_box
+create_atoms 1 region sim_box
+
+region rfix block INF INF INF INF 0 4 units lattice
+group gfix region rfix
+group gmove subtract all gfix
+
+mass	1 28.0855
+
+pair_style tersoff/k2
+pair_coeff * * SiC.tersoff_k2 Si
+fix f_qeq all qeq/tersoff/k2 1 0.0 10.0 1.0e-15 tersoff/k2
+
+neighbor 2 bin
+neigh_modify every 10 delay 0 check yes
+
+timestep 0.001
+variable myq atom q
+
+dump d1 all cfg 100 cfg/meltquench.npt.*.cfg mass type xs ys zs id type q fx fy fz v_myq
+dump_modify d1 element Si
+thermo 100
+thermo_style custom step temp etotal pe evdwl ecoul ke lx ly lz vol press
+
+fix f1 all box/relax iso 0.0 vmax 0.001
+minimize 1.0e-15 1.0e-15 1000 100000
+unfix f1
+
+velocity gmove create 20000.0 12348 dist gaussian mom yes
+fix f1 gmove nvt temp 10000 10000 0.1
+
+run 5000
+# write_restart dump/melt10
+unfix f1
+
+velocity all create 1600.0 12348 dist gaussian mom yes
+fix f1 all nvt temp 1600 1600 0.1
+run 5000
+unfix f1
+# write_restart dump/melt25
+
+fix f1 all nph aniso 0.0 0.0 1.0
+run 200000
+unfix f1
+# write_restart dump/melt30
+
