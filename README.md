@@ -5,8 +5,9 @@ _So Takamoto_
 
 LAMMPS implementation of the interatomic potential for Si-C system.  
 
-The related work has accepted in Physical Review B:
-Takamoto S. et al. (2018) Atomistic mechanism of graphene growth on SiC substrate: Large-scale molecular dynamics simulation based on a new charge-transfer bond-order type potential Physical Review B, American Physical Society. Forthcoming 2018.
+The related work has published in Physical Review B:
+So Takamoto, Takahiro Yamasaki, Jun Nara, Takahisa Ohno, Chioko Kaneta, Asuka Hatano, and Satoshi Izumi, "Atomistic mechanism of graphene growth on SiC substrate: Large-scale molecular dynamics simulation based on a new charge-transfer bond-order type potential", Physical Review B 97, 125411 (2018).
+DOI: <https://doi.org/10.1103/PhysRevB.97.125411>
 ArXiv: <https://arxiv.org/abs/1802.07871>
 
 An example of molecular dynamics simulation using this interatomic potential:
