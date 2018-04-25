@@ -1,0 +1,20 @@
+include in.setup_run
+include in.read_before
+
+variable mystep equal step
+include cfg/in.o2add.${mystep}
+
+group gmove delete
+group gmove subtract all gfreeze
+
+include in.pair
+
+fix fwall1 all wall/reflect zhi EDGE
+fix fwall2 all wall/reflect zlo EDGE
+fix ffreeze gfreeze setforce 0.0 0.0 0.0
+fix f1 gmove nvt temp ${e_temperature} ${e_temperature} 0.05
+
+run 2000
+
+include in.output_run
+

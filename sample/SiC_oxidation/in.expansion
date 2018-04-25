@@ -1,0 +1,53 @@
+include in.setup_run
+
+variable temp_init equal v_e_temperature*2
+
+boundary p p p
+
+lattice diamond 4.31
+region sim_box block 0 1 0 1 0 1
+
+create_box 3 sim_box
+create_atoms 1 single 0.0 0.0 0.0 units lattice
+create_atoms 1 single 0.0 0.5 0.5 units lattice
+create_atoms 1 single 0.5 0.0 0.5 units lattice
+create_atoms 1 single 0.5 0.5 0.0 units lattice
+create_atoms 2 single 0.25 0.25 0.25 units lattice
+create_atoms 2 single 0.25 0.75 0.75 units lattice
+create_atoms 2 single 0.75 0.25 0.75 units lattice
+create_atoms 2 single 0.75 0.75 0.25 units lattice
+
+replicate 3 3 3
+
+mass 1 28.084
+mass 2 12.0107
+mass 3 15.999
+
+include in.pair
+
+neighbor 2 bin
+neigh_modify every 10 delay 0 check yes
+
+thermo 20
+thermo_style custom step temp etotal pe evdwl ecoul ke lx ly lz vol press
+
+variable myLx equal lx
+
+fix f1 all box/relax iso 0.0 vmax 0.001
+minimize 1.0e-15 1.0e-15 1000 100000
+unfix f1
+
+velocity all create ${temp_init} ${randseed} dist gaussian mom yes
+fix f1 all npt temp ${e_temperature} ${e_temperature} 0.05 iso 0.0 0.0 0.5
+run 1000
+unfix f1
+
+reset_timestep 0
+fix ftemplx all ave/time 10 999 10000 v_myLx
+fix f1 all npt temp ${e_temperature} ${e_temperature} 0.05 iso 0.0 0.0 0.5
+run 10000
+unfix f1
+
+variable templx equal f_ftemplx/3.0
+print ${templx} file lattice.dat
+

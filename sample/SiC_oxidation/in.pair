@@ -1,0 +1,4 @@
+pair_style tersoff/k2
+pair_coeff * * SiOC.tersoff_k2 Si C O
+fix fqeq_tersoff_k2 all qeq/tersoff/k2 1 0.0 10.0 1.0e-20 tersoff/k2
+

@@ -1,0 +1,11 @@
+shell mkdir cfg
+include in.expansion
+include in.init
+include in.anneal
+
+label o2addLoop
+variable i loop 2000
+  shell python3 find_void.py
+  include in.core
+next i
+jump in.loop o2addLoop

@@ -1,0 +1,3 @@
+write_dump all custom cfg/run.*.dump mass type xs ys zs q
+write_restart cfg/dump.*
+

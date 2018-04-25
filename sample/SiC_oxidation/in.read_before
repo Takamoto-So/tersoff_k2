@@ -1,0 +1,10 @@
+boundary p p f
+read_restart cfg/dump.*
+balance 1.0 shift z 5 1.1
+
+thermo 20
+thermo_style custom step temp etotal pe evdwl ecoul ke lx ly lz vol press
+
+dump d1 all cfg 100 cfg/run.*.cfg mass type xs ys zs id type q fx fy fz
+dump_modify d1 element Si C O
+

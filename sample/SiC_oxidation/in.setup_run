@@ -1,0 +1,9 @@
+clear
+dimension 3
+units metal
+atom_style charge
+timestep 0.0005
+
+variable e_temperature equal 1600.0
+variable randseed equal 10000
+
